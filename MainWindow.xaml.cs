@@ -246,19 +246,45 @@ public sealed partial class MainWindow : Window
 
     private Button CreateDeviceButton(AudioDeviceInfo device)
     {
+        string mainName = device.Name;
+        string? detail = null;
+        var match = System.Text.RegularExpressions.Regex.Match(device.Name, @"^(.*?)\s*\((.*)\)\s*$");
+        if (match.Success && !string.IsNullOrWhiteSpace(match.Groups[2].Value))
+        {
+            mainName = match.Groups[1].Value;
+            detail = match.Groups[2].Value;
+        }
+
         var label = new TextBlock
         {
-            Text = device.Name,
+            Text = mainName,
             FontSize = 18,
             Foreground = new SolidColorBrush(TextColor),
             HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment = VerticalAlignment.Center,
-            TextTrimming = Microsoft.UI.Xaml.TextTrimming.CharacterEllipsis,
-            Margin = new Thickness(16, 0, 0, 0)
+            TextTrimming = Microsoft.UI.Xaml.TextTrimming.CharacterEllipsis
         };
 
+        var textPanel = new StackPanel
+        {
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(16, 0, 0, 0)
+        };
+        textPanel.Children.Add(label);
+        if (detail != null)
+        {
+            textPanel.Children.Add(new TextBlock
+            {
+                Text = detail,
+                FontSize = 12,
+                Foreground = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 138, 138, 138)),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                TextTrimming = Microsoft.UI.Xaml.TextTrimming.CharacterEllipsis,
+                Margin = new Thickness(0, 2, 0, 0)
+            });
+        }
+
         var content = new Grid { Margin = new Thickness(16, 0, 20, 0) };
-        content.Children.Add(label);
+        content.Children.Add(textPanel);
 
         var button = new Button
         {
