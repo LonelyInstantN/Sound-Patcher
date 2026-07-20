@@ -3,7 +3,6 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Shapes;
 using SoundSwitcher.Audio;
 
 namespace SoundSwitcher;
@@ -16,8 +15,6 @@ public sealed partial class MainWindow : Window
         Windows.UI.Color.FromArgb(255, 251, 251, 251);
     private static readonly Windows.UI.Color ButtonBorderColor =
         Windows.UI.Color.FromArgb(255, 229, 229, 229);
-    private static readonly Windows.UI.Color InactiveRingColor =
-        Windows.UI.Color.FromArgb(255, 209, 209, 209);
     private static readonly Windows.UI.Color TextColor =
         Windows.UI.Color.FromArgb(255, 26, 26, 26);
 
@@ -134,25 +131,15 @@ public sealed partial class MainWindow : Window
         var accent = new SolidColorBrush(AccentColor);
         var active = device.IsActive && !_editMode;
 
-        var ring = new Border
+        var bar = new Border
         {
-            Width = 22,
-            Height = 22,
-            CornerRadius = new CornerRadius(11),
-            BorderThickness = new Thickness(2),
-            BorderBrush = active ? accent : new SolidColorBrush(InactiveRingColor),
+            Width = 3,
+            Height = 24,
+            CornerRadius = new CornerRadius(1.5),
+            Background = active ? accent : new SolidColorBrush(Colors.Transparent),
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Left
         };
-        if (active)
-        {
-            ring.Child = new Ellipse
-            {
-                Width = 10,
-                Height = 10,
-                Fill = accent
-            };
-        }
 
         var label = new TextBlock
         {
@@ -167,10 +154,10 @@ public sealed partial class MainWindow : Window
         var content = new Grid();
         content.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        content.Children.Add(ring);
+        content.Children.Add(bar);
         Grid.SetColumn(label, 1);
         content.Children.Add(label);
-        content.Margin = new Thickness(24, 0, 20, 0);
+        content.Margin = new Thickness(16, 0, 20, 0);
         label.Margin = new Thickness(18, 0, 0, 0);
 
         var button = new Button
