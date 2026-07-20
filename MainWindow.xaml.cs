@@ -249,7 +249,7 @@ public sealed partial class MainWindow : Window
         var label = new TextBlock
         {
             Text = device.Name,
-            FontSize = 16,
+            FontSize = 18,
             Foreground = new SolidColorBrush(TextColor),
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,

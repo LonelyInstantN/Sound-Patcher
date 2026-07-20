@@ -111,14 +111,26 @@
             </Grid>
         </ScrollViewer>
 
-        <TextBlock
+        <StackPanel
             x:Name="EditHint"
             Grid.Row="2"
-            Text="编辑模式：点击设备可显示 / 隐藏，再次点击 ✎ 完成"
-            Margin="0,4,0,10"
+            Orientation="Horizontal"
             HorizontalAlignment="Center"
-            FontSize="12"
-            Foreground="#FF909090"
-            Visibility="Collapsed"/>
+            Margin="0,4,0,10"
+            Visibility="Collapsed">
+            <TextBlock
+                Text="编辑模式：点击设备可显示 / 隐藏，再次点击"
+                FontSize="12"
+                Foreground="#FF909090"/>
+            <FontIcon
+                Glyph="&#xE70F;"
+                FontSize="12"
+                Foreground="#FF909090"
+                Margin="5,0"/>
+            <TextBlock
+                Text="完成"
+                FontSize="12"
+                Foreground="#FF909090"/>
+        </StackPanel>
     </Grid>
 </Window>
