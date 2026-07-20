@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 Remove-Item -Recurse -Force "$PSScriptRoot\publish" -ErrorAction SilentlyContinue
-dotnet publish "$PSScriptRoot\SoundPatcher.csproj" -c Release -r win-x64 --self-contained true `
+dotnet publish "$PSScriptRoot\SoundPatcher.csproj" -c Release -r win-x64 -p:SelfContained=true `
     -p:PublishSingleFile=true `
     -p:IncludeAllContentForSelfExtract=true `
     -p:EnableCompressionInSingleFile=true `
