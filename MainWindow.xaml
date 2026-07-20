@@ -72,19 +72,18 @@
                     VerticalAlignment="Center"
                     FontSize="13"
                     Foreground="#FF8A8A8A"/>
+                <Button
+                    x:Name="EditButton"
+                    Width="36"
+                    Height="28"
+                    Background="Transparent"
+                    CornerRadius="6"
+                    Padding="0"
+                    VerticalAlignment="Center"
+                    Click="EditButton_Click">
+                    <FontIcon Glyph="&#xE70F;" FontSize="14" Foreground="#FF909090"/>
+                </Button>
             </StackPanel>
-            <Button
-                x:Name="EditButton"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Margin="0,0,52,0"
-                Width="40"
-                Height="32"
-                Background="Transparent"
-                CornerRadius="6"
-                Click="EditButton_Click">
-                <FontIcon Glyph="&#xE70F;" FontSize="15" Foreground="#FF909090"/>
-            </Button>
         </Grid>
 
         <ScrollViewer
