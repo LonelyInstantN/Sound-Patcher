@@ -9,14 +9,16 @@ namespace SoundSwitcher;
 
 public sealed partial class MainWindow : Window
 {
-    private static readonly Windows.UI.Color AccentColor =
-        Windows.UI.Color.FromArgb(255, 81, 43, 212);
     private static readonly Windows.UI.Color ButtonBgColor =
         Windows.UI.Color.FromArgb(255, 251, 251, 251);
     private static readonly Windows.UI.Color ButtonBorderColor =
         Windows.UI.Color.FromArgb(255, 229, 229, 229);
     private static readonly Windows.UI.Color TextColor =
         Windows.UI.Color.FromArgb(255, 26, 26, 26);
+
+    private const double ItemHeight = 72;
+    private const double ItemSpacing = 18;
+    private const double IndicatorHeight = 36;
 
     private readonly AudioManager _audio = new();
     private readonly AppSettings _settings;
@@ -138,6 +140,16 @@ public sealed partial class MainWindow : Window
 
         DevicePanel.Children.Clear();
 
+        int activeIndex = -1;
+        if (!_editMode)
+        {
+            for (int i = 0; i < visible.Count; i++)
+            {
+                if (visible[i].IsActive) { activeIndex = i; break; }
+            }
+        }
+        MoveIndicator(activeIndex);
+
         if (visible.Count == 0)
         {
             DevicePanel.Children.Add(new TextBlock
@@ -158,21 +170,53 @@ public sealed partial class MainWindow : Window
         }
     }
 
+    private double? _indicatorY;
+
+    private void MoveIndicator(int activeIndex)
+    {
+        if (activeIndex < 0)
+        {
+            ActiveIndicator.Visibility = Visibility.Collapsed;
+            _indicatorY = null;
+            return;
+        }
+
+        double targetY = activeIndex * (ItemHeight + ItemSpacing) + (ItemHeight - IndicatorHeight) / 2;
+
+        if (_indicatorY.HasValue && Math.Abs(_indicatorY.Value - targetY) < 0.5
+            && ActiveIndicator.Visibility == Visibility.Visible)
+        {
+            return;
+        }
+
+        ActiveIndicator.Visibility = Visibility.Visible;
+
+        if (!_indicatorY.HasValue)
+        {
+            IndicatorTransform.Y = targetY;
+        }
+        else
+        {
+            var animation = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
+            {
+                To = targetY,
+                Duration = new Duration(TimeSpan.FromMilliseconds(220)),
+                EasingFunction = new Microsoft.UI.Xaml.Media.Animation.QuadraticEase
+                {
+                    EasingMode = Microsoft.UI.Xaml.Media.Animation.EasingMode.EaseOut
+                }
+            };
+            var storyboard = new Microsoft.UI.Xaml.Media.Animation.Storyboard();
+            storyboard.Children.Add(animation);
+            Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTarget(animation, IndicatorTransform);
+            Microsoft.UI.Xaml.Media.Animation.Storyboard.SetTargetProperty(animation, "Y");
+            storyboard.Begin();
+        }
+        _indicatorY = targetY;
+    }
+
     private Button CreateDeviceButton(AudioDeviceInfo device)
     {
-        var accent = new SolidColorBrush(AccentColor);
-        var active = device.IsActive && !_editMode;
-
-        var bar = new Border
-        {
-            Width = 8,
-            Height = 48,
-            CornerRadius = new CornerRadius(4),
-            Background = active ? accent : new SolidColorBrush(Colors.Transparent),
-            VerticalAlignment = VerticalAlignment.Center,
-            HorizontalAlignment = HorizontalAlignment.Left
-        };
-
         var label = new TextBlock
         {
             Text = device.Name,
@@ -180,17 +224,12 @@ public sealed partial class MainWindow : Window
             Foreground = new SolidColorBrush(TextColor),
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
-            TextTrimming = Microsoft.UI.Xaml.TextTrimming.CharacterEllipsis
+            TextTrimming = Microsoft.UI.Xaml.TextTrimming.CharacterEllipsis,
+            Margin = new Thickness(16, 0, 0, 0)
         };
 
-        var content = new Grid();
-        content.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        content.Children.Add(bar);
-        Grid.SetColumn(label, 1);
+        var content = new Grid { Margin = new Thickness(16, 0, 20, 0) };
         content.Children.Add(label);
-        content.Margin = new Thickness(16, 0, 20, 0);
-        label.Margin = new Thickness(8, 0, 0, 0);
 
         var button = new Button
         {
