@@ -3,9 +3,9 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using SoundSwitcher.Audio;
+using SoundPatcher.Audio;
 
-namespace SoundSwitcher;
+namespace SoundPatcher;
 
 public sealed partial class MainWindow : Window
 {
@@ -52,7 +52,7 @@ public sealed partial class MainWindow : Window
 
     private void ConfigureWindow()
     {
-        Title = "SoundSwitcher";
+        Title = "Sound Patcher";
 
         SetupIcon();
 
@@ -81,7 +81,7 @@ public sealed partial class MainWindow : Window
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             string icoPath = Path.Combine(dir, "app.ico");
-            using (var stream = assembly.GetManifestResourceStream("SoundSwitcher.app.ico"))
+            using (var stream = assembly.GetManifestResourceStream("SoundPatcher.app.ico"))
             using (var file = File.Create(icoPath))
             {
                 stream?.CopyTo(file);
@@ -89,7 +89,7 @@ public sealed partial class MainWindow : Window
             _appWindow.SetIcon(icoPath);
 
             string pngPath = Path.Combine(dir, "app.png");
-            using (var stream = assembly.GetManifestResourceStream("SoundSwitcher.icons8-audio-cable-96.png"))
+            using (var stream = assembly.GetManifestResourceStream("SoundPatcher.icons8-audio-cable-96.png"))
             using (var file = File.Create(pngPath))
             {
                 stream?.CopyTo(file);

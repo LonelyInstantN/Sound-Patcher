@@ -1,4 +1,4 @@
-namespace SoundSwitcher;
+namespace SoundPatcher;
 
 public partial class App : Microsoft.UI.Xaml.Application
 {

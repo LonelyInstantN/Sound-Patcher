@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace SoundSwitcher;
+namespace SoundPatcher;
 
 public class AppSettings
 {

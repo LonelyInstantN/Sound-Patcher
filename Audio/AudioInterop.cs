@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace SoundSwitcher.Audio;
+namespace SoundPatcher.Audio;
 
 public enum EDataFlow
 {
