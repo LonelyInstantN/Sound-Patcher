@@ -58,12 +58,21 @@
         </Grid.RowDefinitions>
 
         <Grid x:Name="TitleBarGrid" Grid.Row="0">
-            <TextBlock
-                Text="SoundSwitcher"
-                Margin="16,0,0,0"
+            <StackPanel
+                Orientation="Horizontal"
+                Margin="12,0,0,0"
                 VerticalAlignment="Center"
-                FontSize="13"
-                Foreground="#FF8A8A8A"/>
+                Spacing="8">
+                <Image
+                    x:Name="TitleBarIcon"
+                    Width="18"
+                    Height="18"/>
+                <TextBlock
+                    Text="SoundSwitcher"
+                    VerticalAlignment="Center"
+                    FontSize="13"
+                    Foreground="#FF8A8A8A"/>
+            </StackPanel>
             <Button
                 x:Name="EditButton"
                 HorizontalAlignment="Right"

@@ -52,6 +52,8 @@ public sealed partial class MainWindow : Window
     {
         Title = "SoundSwitcher";
 
+        SetupIcon();
+
         var presenter = OverlappedPresenter.Create();
         presenter.IsResizable = true;
         presenter.IsMinimizable = false;
@@ -64,6 +66,36 @@ public sealed partial class MainWindow : Window
         SetTitleBar(TitleBarGrid);
 
         _appWindow.Resize(new Windows.Graphics.SizeInt32(_settings.WindowWidth, _settings.WindowHeight));
+    }
+
+    private void SetupIcon()
+    {
+        try
+        {
+            string dir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SoundSwitcher");
+            Directory.CreateDirectory(dir);
+
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            string icoPath = Path.Combine(dir, "app.ico");
+            using (var stream = assembly.GetManifestResourceStream("SoundSwitcher.app.ico"))
+            using (var file = File.Create(icoPath))
+            {
+                stream?.CopyTo(file);
+            }
+            _appWindow.SetIcon(icoPath);
+
+            string pngPath = Path.Combine(dir, "app.png");
+            using (var stream = assembly.GetManifestResourceStream("SoundSwitcher.icons8-audio-cable-96.png"))
+            using (var file = File.Create(pngPath))
+            {
+                stream?.CopyTo(file);
+            }
+            var bitmap = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage(new Uri(pngPath));
+            TitleBarIcon.Source = bitmap;
+        }
+        catch { }
     }
 
     private void RestorePosition()
@@ -133,9 +165,9 @@ public sealed partial class MainWindow : Window
 
         var bar = new Border
         {
-            Width = 3,
-            Height = 24,
-            CornerRadius = new CornerRadius(1.5),
+            Width = 8,
+            Height = 48,
+            CornerRadius = new CornerRadius(4),
             Background = active ? accent : new SolidColorBrush(Colors.Transparent),
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Left
@@ -158,7 +190,7 @@ public sealed partial class MainWindow : Window
         Grid.SetColumn(label, 1);
         content.Children.Add(label);
         content.Margin = new Thickness(16, 0, 20, 0);
-        label.Margin = new Thickness(18, 0, 0, 0);
+        label.Margin = new Thickness(8, 0, 0, 0);
 
         var button = new Button
         {
