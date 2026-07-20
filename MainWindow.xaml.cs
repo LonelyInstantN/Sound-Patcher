@@ -89,7 +89,7 @@ public sealed partial class MainWindow : Window
             _appWindow.SetIcon(icoPath);
 
             string pngPath = Path.Combine(dir, "app.png");
-            using (var stream = assembly.GetManifestResourceStream("SoundPatcher.icons8-audio-cable-96.png"))
+            using (var stream = assembly.GetManifestResourceStream("SoundPatcher.app.png"))
             using (var file = File.Create(pngPath))
             {
                 stream?.CopyTo(file);
