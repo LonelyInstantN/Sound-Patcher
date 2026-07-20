@@ -140,6 +140,8 @@ public sealed partial class MainWindow : Window
 
         DevicePanel.Children.Clear();
 
+        UpdateIndicatorClip(visible.Count);
+
         int activeIndex = -1;
         if (!_editMode)
         {
@@ -170,7 +172,34 @@ public sealed partial class MainWindow : Window
         }
     }
 
+    private static readonly Windows.UI.Color WindowBgColor =
+        Windows.UI.Color.FromArgb(255, 243, 243, 243);
+
     private double? _indicatorY;
+
+    private void UpdateIndicatorClip(int buttonCount)
+    {
+        for (int i = IndicatorLayer.Children.Count - 1; i >= 0; i--)
+        {
+            if (IndicatorLayer.Children[i] is Border b && b.Tag as string == "GapMask")
+            {
+                IndicatorLayer.Children.RemoveAt(i);
+            }
+        }
+
+        for (int i = 0; i < buttonCount - 1; i++)
+        {
+            IndicatorLayer.Children.Add(new Border
+            {
+                Tag = "GapMask",
+                Height = ItemSpacing,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(0, (i + 1) * ItemHeight + i * ItemSpacing, 0, 0),
+                Background = new SolidColorBrush(WindowBgColor)
+            });
+        }
+    }
 
     private void MoveIndicator(int activeIndex)
     {

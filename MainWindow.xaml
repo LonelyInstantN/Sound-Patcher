@@ -93,21 +93,22 @@
             HorizontalScrollBarVisibility="Disabled">
             <Grid Margin="20,8,20,16">
                 <StackPanel x:Name="DevicePanel" Spacing="18"/>
-                <Border
-                    x:Name="ActiveIndicator"
-                    Width="4"
-                    Height="36"
-                    Margin="17,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    CornerRadius="2"
-                    Background="#512BD4"
-                    IsHitTestVisible="False"
-                    Visibility="Collapsed">
-                    <Border.RenderTransform>
-                        <TranslateTransform x:Name="IndicatorTransform" Y="0"/>
-                    </Border.RenderTransform>
-                </Border>
+                <Grid x:Name="IndicatorLayer" IsHitTestVisible="False">
+                    <Border
+                        x:Name="ActiveIndicator"
+                        Width="4"
+                        Height="36"
+                        Margin="17,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        CornerRadius="2"
+                        Background="#512BD4"
+                        Visibility="Collapsed">
+                        <Border.RenderTransform>
+                            <TranslateTransform x:Name="IndicatorTransform" Y="0"/>
+                        </Border.RenderTransform>
+                    </Border>
+                </Grid>
             </Grid>
         </ScrollViewer>
 
