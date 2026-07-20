@@ -12,6 +12,14 @@ public sealed partial class MainWindow : Window
 {
     private static readonly Windows.UI.Color AccentColor =
         Windows.UI.Color.FromArgb(255, 81, 43, 212);
+    private static readonly Windows.UI.Color ButtonBgColor =
+        Windows.UI.Color.FromArgb(255, 251, 251, 251);
+    private static readonly Windows.UI.Color ButtonBorderColor =
+        Windows.UI.Color.FromArgb(255, 229, 229, 229);
+    private static readonly Windows.UI.Color InactiveRingColor =
+        Windows.UI.Color.FromArgb(255, 209, 209, 209);
+    private static readonly Windows.UI.Color TextColor =
+        Windows.UI.Color.FromArgb(255, 26, 26, 26);
 
     private readonly AudioManager _audio = new();
     private readonly AppSettings _settings;
@@ -124,16 +132,15 @@ public sealed partial class MainWindow : Window
     private Button CreateDeviceButton(AudioDeviceInfo device)
     {
         var accent = new SolidColorBrush(AccentColor);
-        var white = new SolidColorBrush(Colors.White);
-        bool active = device.IsActive && !_editMode;
+        var active = device.IsActive && !_editMode;
 
         var ring = new Border
         {
-            Width = 30,
-            Height = 30,
-            CornerRadius = new CornerRadius(15),
-            BorderThickness = new Thickness(3),
-            BorderBrush = active ? white : accent,
+            Width = 22,
+            Height = 22,
+            CornerRadius = new CornerRadius(11),
+            BorderThickness = new Thickness(2),
+            BorderBrush = active ? accent : new SolidColorBrush(InactiveRingColor),
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Left
         };
@@ -141,36 +148,40 @@ public sealed partial class MainWindow : Window
         {
             ring.Child = new Ellipse
             {
-                Width = 14,
-                Height = 14,
-                Fill = white
+                Width = 10,
+                Height = 10,
+                Fill = accent
             };
         }
 
         var label = new TextBlock
         {
             Text = device.Name,
-            FontSize = 17,
-            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-            Foreground = active ? white : accent,
-            HorizontalAlignment = HorizontalAlignment.Center,
+            FontSize = 16,
+            Foreground = new SolidColorBrush(TextColor),
+            HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
             TextTrimming = Microsoft.UI.Xaml.TextTrimming.CharacterEllipsis
         };
 
-        var content = new Grid { Margin = new Thickness(26, 0, 26, 0) };
+        var content = new Grid();
+        content.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        content.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         content.Children.Add(ring);
+        Grid.SetColumn(label, 1);
         content.Children.Add(label);
+        content.Margin = new Thickness(24, 0, 20, 0);
+        label.Margin = new Thickness(18, 0, 0, 0);
 
         var button = new Button
         {
             Style = (Style)RootGrid.Resources["DeviceButtonStyle"],
-            Height = 84,
+            Height = 72,
             HorizontalAlignment = HorizontalAlignment.Stretch,
-            CornerRadius = new CornerRadius(10),
-            BorderThickness = new Thickness(active ? 0 : 3),
-            BorderBrush = accent,
-            Background = active ? accent : white,
+            CornerRadius = new CornerRadius(8),
+            BorderThickness = new Thickness(1),
+            BorderBrush = new SolidColorBrush(ButtonBorderColor),
+            Background = new SolidColorBrush(ButtonBgColor),
             Content = content,
             Tag = device
         };

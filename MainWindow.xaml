@@ -2,7 +2,7 @@
     x:Class="SoundSwitcher.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid x:Name="RootGrid" Background="#FFFFFF">
+    <Grid x:Name="RootGrid" Background="#f3f3f3">
         <Grid.Resources>
             <Style x:Key="DeviceButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
@@ -63,7 +63,7 @@
                 Margin="16,0,0,0"
                 VerticalAlignment="Center"
                 FontSize="13"
-                Foreground="#FFC0C0C0"/>
+                Foreground="#FF8A8A8A"/>
             <Button
                 x:Name="EditButton"
                 HorizontalAlignment="Right"
